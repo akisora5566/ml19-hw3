@@ -98,7 +98,7 @@ def kernel_svm_train(data, labels, params):
     # hessian, weights, eq_coeffs, eq_constants, lower_bounds, and upper_bounds
     # which will be passed to the solver that solves
     #
-    # minimize      x^T (hessian) x - (weights)^T x
+    # minimize      0.5 x^T (hessian) x - (weights)^T x
     # subject to    (eq_coeffs) x = (eq_constants)
     #   and         (lower_bounds) <= x <= (upper_bounds)
     ##########################################################################

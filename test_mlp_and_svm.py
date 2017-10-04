@@ -136,7 +136,7 @@ class MlpSvmTest(unittest.TestCase):
 
     def test_poly_svm(self):
         """
-        Train quadratic polynomial SVM on dataset 1, which is not linearly separable. 
+        Train quadratic polynomial SVM on dataset 1, which is not linearly separable.
         """
         i = 1
         params = {'kernel': 'polynomial', 'C': 1.0, 'order': 2}
@@ -151,16 +151,16 @@ class MlpSvmTest(unittest.TestCase):
 
     def test_rbf_svm(self):
         """
-        Train RBF SVM on dataset 1, which is not linearly separable. 
+        Train RBF SVM on dataset 1, which is not linearly separable.
         """
         i = 1
-        params = {'kernel': 'rbf', 'C': 1.0, 'sigma': 0.2}
+        params = {'kernel': 'rbf', 'C': 1.0, 'sigma': 0.5}
 
         rbf_svm_model = kernel_svm_train(self.train_data[i], self.train_labels[i], params)
         predictions, _ = kernel_svm_predict(self.test_data[i], rbf_svm_model)
         test_accuracy = np.mean(predictions == self.test_labels[i])
 
-        print("RBF SVM had test accuracy %2.3f (should be around 0.92)" %
+        print("RBF SVM had test accuracy %2.3f (should be around 0.93)" %
               test_accuracy)
         assert test_accuracy > 0.9, "Accuracy was below 0.9."
 
