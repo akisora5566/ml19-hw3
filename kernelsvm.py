@@ -107,8 +107,8 @@ def kernel_svm_train(data, labels, params):
     ###########################################################################
     # Call quadratic program with provided inputs.
     ############################################################################
-    alphas = solve_quadprog(hessian, weights, None, None,
-                            eq_coeffs, eq_constants, lower_bounds, upper_bounds)
+    alphas = solve_quadprog(hessian, weights, eq_coeffs, eq_constants, None,
+                            None, lower_bounds, upper_bounds)
 
     model = dict()
 

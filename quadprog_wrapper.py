@@ -52,7 +52,7 @@ def solve_quadprog(hessian, weights, eq_coeffs, eq_constants, ineq_coeffs, ineq_
 
     # stack up equality constraints with inequality constraints
     if eq_coeffs is not None:
-        coeffs = np.vstack((eq_coeffs, full_ineq_coeffs))
+        coeffs = np.vstack((eq_coeffs, full_ineq_coeffs)).T
         constants = np.concatenate((eq_constants, full_ineq_constants))
         num_eq = eq_constants.size
     else:
