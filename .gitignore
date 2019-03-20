@@ -1,0 +1,12 @@
+.ipynb_checkpoints/*
+__pycache__/*
+*.pyc
+.DS_Store
+*.aux
+*.log
+*.out
+*.synctex.gz
+*.db
+20news-bydate/*
+.pytest_cache/*
+.idea/*

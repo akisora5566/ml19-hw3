@@ -1,0 +1,187 @@
+\documentclass[10pt]{article}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{graphicx}
+\usepackage{ulem}
+\usepackage{framed}
+\usepackage{microtype}
+\usepackage{booktabs}
+\usepackage{subfigure}
+\usepackage{hyperref}
+\usepackage{tabularx}
+\usepackage[capitalise,noabbrev]{cleveref}
+\usepackage[usenames,dvipsnames]{xcolor}
+\newcommand{\theHalgorithm}{\arabic{algorithm}}
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
+\usepackage[letterpaper, margin=1in]{geometry}
+\sloppy
+
+
+\renewcommand{\familydefault}{ppl}
+
+\newcommand{\bx}{{\boldsymbol x}}
+\newcommand{\by}{{\boldsymbol y}}
+\newcommand{\bh}{{\boldsymbol h}}
+\newcommand{\bw}{{\boldsymbol w}}
+\newcommand{\bW}{{\mathbf W}}
+\newcommand{\bK}{\mathbf{K}}
+\newcommand{\alphavec}{{\boldsymbol \alpha}}
+\newcommand{\bmu}{{\boldsymbol \mu}}
+\newcommand{\balpha}{{\boldsymbol \alpha}}
+\newcommand{\bbeta}{{\boldsymbol \beta}}
+\newcommand{\btheta}{{\boldsymbol \theta}}
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator*{\AND}{AND}
+\DeclareMathOperator*{\OR}{OR}
+\DeclareMathOperator*{\XOR}{XOR}
+\DeclareMathOperator*{\sign}{sign}
+
+
+\newcommand{\solution}[1]{{\color{PineGreen} \textbf{Solution:} #1}}
+
+\newcommand{\todo}[1]{\textbf{\textcolor{MidnightBlue}{to do: #1}} }
+
+\begin{document}
+
+\section*{Machine Learning Spring 2019 Homework 3}
+
+Homework must be submitted electronically on Canvas. Make sure to explain you reasoning or show your derivations. Except for answers that are especially straightforward, you will lose points for unjustified answers, even if they are correct. 
+
+\section*{General Instructions}
+
+You are allowed to work with at most one other student on the homework. With your partner, you will submit only one copy, and you will share the grade that your submission receives. You should set up your partnership on Canvas as a two-person group. 
+
+Submit your homework electronically on Canvas. We recommend using LaTeX, especially for the written problems. But you are welcome to use anything as long as it is neat and readable. 
+
+For the programming portion, you should only need to modify the Python files. You may modify the iPython notebook, but you will not be submitting them, so your code must work with our provided iPython notebook.
+
+Relatedly, cite all outside sources of information and ideas. 
+
+\section*{Written Problems}
+
+\begin{enumerate}
+
+\item Machine learning methods can be viewed as function estimators. Consider the logical functions AND, OR, and XOR. Using a signed representation for Boolean variables, where input and output variables are in $\{+1, -1\}$, these functions are defined as
+\begin{align}
+\AND(x_1, x_2) &= \begin{cases}
++1 & \textrm{if}~ x_1 = +1 \wedge x_2 = +1\\
+-1 & \textrm{otherwise}
+\end{cases}\\
+\OR(x_1, x_2) &= \begin{cases}
++1 & \textrm{if}~ x_1 = +1\\
++1 & \textrm{if}~ x_2 = +1\\
+-1 & \textrm{otherwise}
+\end{cases}\\
+\XOR(x_1, x_2) &= \begin{cases}
++1 & \textrm{if}~ x_1 = +1 \wedge x_2 = -1\\
++1 & \textrm{if}~ x_2 = +1 \wedge x_1 = -1\\
+-1 & \textrm{otherwise}
+\end{cases}
+\end{align}
+
+\begin{enumerate}
+
+\item (6 points) Which of these three logical functions can be expressed as a linear classifier of the form
+\begin{align}
+f(\bx; \bw) = \sign(w_1 x_1 + w_2 x_2 + b),
+\end{align}
+and show weights $w_1$, $w_2$, and bias values $b$ that mimic these logical functions. Which of these functions cannot be expressed as a linear classifier, and why not?
+
+\item (6 points) For any logical functions that cannot be expressed as a linear classifier, show how and with what weights it can be expressed as a two-layered perceptron of the form
+\begin{align}
+f(\bx; \bw) &= \sign(\bw^{\mathrm{out}\top} \bh + b^{\mathrm{out}})\\
+\bh &= [h_1, h_2]^\top\\
+h_1 &= \sign(\bw^{(1)\top} \bx + b^{(1)})\\
+h_2 &= \sign(\bw^{(2)\top} \bx + b^{(2)})
+\end{align}
+For this problem, you must specify three weight vectors $(\bw^{\mathrm{out}}, \bw^{(1)}, \bw^{(2)})$ and three biases $(b^{\mathrm{out}}, b^{(1)}, b^{(2)})$.
+
+\end{enumerate}
+
+\end{enumerate}
+
+\section*{Programming Assignment}
+
+For this programming assignment, we have provided a lot of starter code. Your tasks will be to complete the code in a few specific places, which will require you to read and understand most of the provided code, but will only require you to write a small amount of code yourself.
+
+In \texttt{syntheticData.mat}, there are 10 synthetic, two-dimensional datasets. All but the first dataset are not linearly classifiable. We provided the main experiment notebook \texttt{run\_synthetic\_experiment.ipynb} for you to use. For each model, the notebook uses cross-validation on the training data to choose learning parameters, trains on the full training set using those parameters, and evaluates the accuracy on the test set. 
+
+We have also provided a unit test class in \texttt{test\_mlp\_and\_svm.py}, which contains unit tests for each type of learning model. These unit tests may be easier to use for debugging in an IDE like PyCharm than the iPython notebook. A successful implementation should pass all unit tests and run through the entire iPython notebook without issues. You can run the unit tests from a *nix command line with the command
+\begin{verbatim}
+python -m unittest -v test_mlp_and_svm
+\end{verbatim}
+or you can use an IDE's unit test interface.
+
+Before starting all the tasks, examine the entire codebase. Follow the code from the iPython notebook to see which methods it calls. Make sure you understand what all of the code does. 
+
+\begin{enumerate}
+
+\item (6 points) Finish the back-propagation operation in the \texttt{mlp\_objective} function in \texttt{mlp.py}. 
+
+You should implement the matrix-form of back-propagation that we covered in class, which we replicate here. First, forward propagation computes the predicted values. We refer to the neural activation values as $\bh$ vectors. For notational convenience, for input $\bx$, let $\bh_0 = \bx$. Then forward propagation computes $\bh_i \leftarrow s\left( \bW_1 \bh_{i-1} \right)$ for $i$ from $1$ to the depth of the MLP (\texttt{num\_layers}). If $\texttt{num\_layers} = m$, the output is $\bh_m$. Forward propagation also computes the derivatives of the squashing function and stores them in \texttt{squash\_derivatives}, i.e., 
+\[
+\texttt{squash\_derivatives[i]} := s'\left(\bW_i \bh_{i-1}\right).
+\]
+
+Back-propagation should start by computing the ``errors'' $\delta$---i.e., the gradients of the loss with respect to each layer's pre-squashed inputs---backwards from the output layer ($\delta_m$) back to the input layer ($\delta_1$). Use the chain-rule recursion, which starts with the last layer $\delta_m = \ell'(f(\bx, \bW))$, and for all other layers,
+\begin{equation}
+\delta_i = \left( \bW_{i+1}^\top \delta_{i+1} \right) \circ s'\left( \bW_i \bh_{i-1} \right)
+\end{equation}
+where the $\circ$ operator is the element-wise product (the default product for \texttt{numpy} \texttt{ndarray}s).
+
+Finally, now that the errors have been computed, compute the gradient for each layer with the formula
+\begin{equation}
+\nabla_{\bW_i} \ell = \delta_i \bh_{i - 1}^\top
+\end{equation}
+
+You should implement these two equations in the marked \texttt{TODO} lines in \texttt{mlp.py}.
+
+\item (6 points) Finish the support-vector machine setup in \texttt{kernel\_svm\_train} and \texttt{kernel\_svm\_predict} in \texttt{kernelsvm.py}. 
+
+The dual quadratic program for kernel SVM is
+\begin{equation}
+\begin{aligned}
+\min_{\alphavec} ~ & \frac{1}{2} \alphavec^\top (\bK \circ \by \by^\top) \alphavec - \sum_{i=1}^n \alpha_i\\
+\textrm{s.t.} ~ & \sum_{i=1}^n \alpha_i y_i = 0, ~~ \alpha_i \in [0, C]
+\end{aligned}
+\end{equation}
+where $\bK$ is the Gram matrix, $\by$ is the vector of labels where $y_i$ is the label of the $i$th point, $C$ is the regularization parameter, and the free vector $\alphavec$ is the dual variables. For the linear kernel, all of the input quantities have been computed for you. Your job is to put them into the correct form to solve the quadratic program in the \texttt{TODO} in \texttt{kernel\_svm\_train}. You will be using our custom wrapper for the open-source \texttt{quadprog} solver, which you will need to install to run (usually \texttt{pip install quadprog} will work). 
+
+Make sure to examine the code after the quadratic program completes. This code saves the information necessary for prediction with the returned \texttt{model} object, including the nonzero support vectors and the bias $b$. Next, you should finish the linear SVM by implementing the predictor in the \texttt{TODO} in \texttt{kernel\_svm\_predict}. The formula for prediction $f(\bx)$ is 
+\begin{equation}
+f(\bx) = \sign\left(\sum_{i=1}^n \alpha_i y_i K(\bx_i, \bx) + b\right).
+\end{equation}
+As usual, you should be able to manipulate this equation to compute the predictions for a batch of data without loops.
+
+Once you complete this second \texttt{TODO}, the linear SVM should pass its tests, and the part of the iPython notebook that tests the linear kernel should run (and perform poorly because the data is not linearly separable). You may see some of the quadratic programs exit with warnings. These warnings are okay; they result from the problem becoming poorly scaled and should not happen as often with the non-linear kernels in the next problem.
+
+\item (6 points) Finish the two kernel functions \texttt{polynomial\_kernel} and \texttt{rbf\_kernel} in \texttt{kernelsvm.py}.
+
+This final task requires approximately two lines of code. You should return the Gram matrix for each of these famous kernel functions. The formula for the polynomial kernel of order $k$ is
+\begin{equation}
+K(\bx_i, \bx_j) = (\bx_i^\top \bx_j + 1)^k~.
+\end{equation}
+
+And the formula for the Gaussian radial-basis function (RBF) kernel is
+\begin{equation}
+K(\bx_i, \bx_j) = \exp\left(- \frac{1}{2 \sigma^2} (\bx_i - \bx_j) ^\top (\bx_i - \bx_j)\right).
+\end{equation}
+
+Both formulas must be computed without loops for full credit, i.e., your code should directly compute these from the inputs \texttt{row\_data} and \texttt{col\_data} without slicing to compute over individual columns of these. The polynomial kernel is fairly straightforward to convert into matrix operations. For the RBF kernel, one hint is that it helps to expand the squared distance 
+\[
+(\bx_i - \bx_j) ^\top (\bx_i - \bx_j)
+\]
+into
+\[
+\bx_i^\top \bx_i + \bx_j^\top \bx_j - 2 \bx_i^\top \bx_j~.
+\]
+This expanded form is easier to reason about via matrices and vectors. Also, see the class slides for some matrix formulas for these kernel computations.
+
+\end{enumerate}
+
+\end{document}
+
+
