@@ -1,5 +1,5 @@
 """Utility functions for plotting data and prediction surfaces"""
-import pylab as plt
+import matplotlib.pyplot as plt
 import numpy as np
 
 
