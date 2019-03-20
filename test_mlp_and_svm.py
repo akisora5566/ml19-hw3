@@ -1,8 +1,7 @@
 """Test class that trains each model type on one or more dataset and evaluates performance."""
-from __future__ import division
 import unittest
 import numpy as np
-import pylab as plt
+import matplotlib.pyplot as plt
 from mlp import mlp_train, mlp_predict, logistic, nll, mlp_objective
 from kernelsvm import kernel_svm_train, kernel_svm_predict
 from scipy.io import loadmat
@@ -163,6 +162,7 @@ class MlpSvmTest(unittest.TestCase):
         print("RBF SVM had test accuracy %2.3f (should be around 0.93)" %
               test_accuracy)
         assert test_accuracy > 0.9, "Accuracy was below 0.9."
+
 
 if __name__ == '__main__':
     unittest.main()

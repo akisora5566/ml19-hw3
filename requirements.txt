@@ -1,0 +1,4 @@
+numpy
+quadprog
+matplotlib
+scipy

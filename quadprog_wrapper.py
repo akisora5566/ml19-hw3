@@ -66,8 +66,8 @@ def solve_quadprog(hessian, weights, eq_coeffs, eq_constants, ineq_coeffs, ineq_
     try:
         sol = quadprog.solve_qp(hessian + small_constant * np.eye(n), weights, coeffs, constants, num_eq)[0]
     except ValueError:
-        print "Warning: Quadratic program solver exited with a numerical error " \
-              "(quadprog can be sensitive to very non-separable problems). Guessing all-zeros solution."
+        print("Warning: Quadratic program solver exited with a numerical error " \
+              "(quadprog can be sensitive to very non-separable problems). Guessing all-zeros solution.")
         sol = np.zeros(n)
 
     return sol

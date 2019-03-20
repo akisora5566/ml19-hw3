@@ -1,5 +1,4 @@
 """Functions for training multi-layer perceptrons."""
-from __future__ import division
 import numpy as np
 
 
