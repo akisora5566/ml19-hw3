@@ -121,20 +121,20 @@ Before starting all the tasks, examine the entire codebase. Follow the code from
 
 \item (6 points) Finish the back-propagation operation in the \texttt{mlp\_objective} function in \texttt{mlp.py}. 
 
-You should implement the matrix-form of back-propagation that we covered in class, which we replicate here. First, forward propagation computes the predicted values. We refer to the neural activation values as $\bh$ vectors. For notational convenience, for input $\bx$, let $\bh_0 = \bx$. Then forward propagation computes $\bh_i \leftarrow s\left( \bW_1 \bh_{i-1} \right)$ for $i$ from $1$ to the depth of the MLP (\texttt{num\_layers}). If $\texttt{num\_layers} = m$, the output is $\bh_m$. Forward propagation also computes the derivatives of the squashing function and stores them in \texttt{squash\_derivatives}, i.e., 
+You should implement the matrix-form of back-propagation that we covered in class, which we replicate here. First, forward propagation computes the predicted values. We refer to the neural activation values as $\bh$ vectors. For notational convenience, for input $\bx$, let $\bh_0 = \bx$. Then forward propagation computes $\bh_{i+1} \leftarrow s\left( \bW_i \bh_{i} \right)$ for $i$ from $1$ to the depth of the MLP (\texttt{num\_layers}). If $\texttt{num\_layers} = m$, the output is $\bh_m$. Forward propagation also computes the derivatives of the squashing function and stores them in \texttt{squash\_derivatives}, i.e., 
 \[
-\texttt{squash\_derivatives[i]} := s'\left(\bW_i \bh_{i-1}\right).
+\texttt{squash\_derivatives[i]} := s'\left(\bW_i \bh_{i}\right).
 \]
 
 Back-propagation should start by computing the ``errors'' $\delta$---i.e., the gradients of the loss with respect to each layer's pre-squashed inputs---backwards from the output layer ($\delta_m$) back to the input layer ($\delta_1$). Use the chain-rule recursion, which starts with the last layer $\delta_m = \ell'(f(\bx, \bW))$, and for all other layers,
 \begin{equation}
-\delta_i = \left( \bW_{i+1}^\top \delta_{i+1} \right) \circ s'\left( \bW_i \bh_{i-1} \right)
+\delta_i = \left( \bW_{i+1}^\top \delta_{i+1} \right) \circ s'\left( \bW_i \bh_{i} \right)
 \end{equation}
 where the $\circ$ operator is the element-wise product (the default product for \texttt{numpy} \texttt{ndarray}s).
 
 Finally, now that the errors have been computed, compute the gradient for each layer with the formula
 \begin{equation}
-\nabla_{\bW_i} \ell = \delta_i \bh_{i - 1}^\top
+\nabla_{\bW_i} \ell = \delta_i \bh_{i}^\top
 \end{equation}
 
 You should implement these two equations in the marked \texttt{TODO} lines in \texttt{mlp.py}.
