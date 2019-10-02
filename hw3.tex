@@ -148,7 +148,10 @@ The dual quadratic program for kernel SVM is
 \textrm{s.t.} ~ & \sum_{i=1}^n \alpha_i y_i = 0, ~~ \alpha_i \in [0, C]
 \end{aligned}
 \end{equation}
-where $\bK$ is the Gram matrix, $\by$ is the vector of labels where $y_i$ is the label of the $i$th point, $C$ is the regularization parameter, and the free vector $\alphavec$ is the dual variables. For the linear kernel, all of the input quantities have been computed for you. Your job is to put them into the correct form to solve the quadratic program in the \texttt{TODO} in \texttt{kernel\_svm\_train}. You will be using our custom wrapper for the open-source \texttt{quadprog} solver, which you will need to install to run (usually \texttt{pip install quadprog} will work, or if that doesn't work and you installed Python through anaconda, you can use \\\texttt{conda install -c omnia quadprog}). 
+where $\bK$ is the Gram matrix, $\by$ is the vector of labels where $y_i$ is the label of the $i$th point, $C$ is the regularization parameter, and the free vector $\alphavec$ is the dual variables. For the linear kernel, all of the input quantities have been computed for you. Your job is to put them into the correct form to solve the quadratic program in the \texttt{TODO} in \texttt{kernel\_svm\_train}. You will be using our custom wrapper for the open-source \texttt{quadprog} solver, which you will need to install to run
+
+To install \texttt{quadprog}, \texttt{pip install quadprog} will sometimes work depending on your system, or you can clone the repository at \url{https://github.com/rmcgibbo/quadprog} and use \texttt{python setup.py install} to install it directly from source.
+Also, \texttt{conda install -c omnia quadprog} is another way to install it.
 
 Make sure to examine the code after the quadratic program completes. This code saves the information necessary for prediction with the returned \texttt{model} object, including the nonzero support vectors and the bias $b$. Next, you should finish the linear SVM by implementing the predictor in the \texttt{TODO} in \texttt{kernel\_svm\_predict}. The formula for prediction $f(\bx)$ is 
 \begin{equation}
