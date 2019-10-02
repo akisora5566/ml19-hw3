@@ -46,7 +46,7 @@
 
 \begin{document}
 
-\section*{Machine Learning Spring 2019 Homework 3}
+\section*{Machine Learning Homework 3}
 
 Homework must be submitted electronically on Canvas. Make sure to explain you reasoning or show your derivations. Except for answers that are especially straightforward, you will lose points for unjustified answers, even if they are correct. 
 
@@ -121,7 +121,7 @@ Before starting all the tasks, examine the entire codebase. Follow the code from
 
 \item (6 points) Finish the back-propagation operation in the \texttt{mlp\_objective} function in \texttt{mlp.py}. 
 
-You should implement the matrix-form of back-propagation that we covered in class, which we replicate here. First, forward propagation computes the predicted values. We refer to the neural activation values as $\bh$ vectors. For notational convenience, for input $\bx$, let $\bh_0 = \bx$. Then forward propagation computes $\bh_{i+1} \leftarrow s\left( \bW_i \bh_{i} \right)$ for $i$ from $1$ to the depth of the MLP (\texttt{num\_layers}). If $\texttt{num\_layers} = m$, the output is $\bh_m$. Forward propagation also computes the derivatives of the squashing function and stores them in \texttt{squash\_derivatives}, i.e., 
+You should implement the matrix-form of back-propagation that we covered in class, which we replicate here. First, forward propagation computes the predicted values. We refer to the neural activation values as $\bh$ vectors. For notational convenience, for input $\bx$, let $\bh_0 = \bx$. Then forward propagation computes $\bh_{i+1} \leftarrow s\left( \bW_i \bh_{i} \right)$ for $i$ from $0$ to the depth of the MLP ($\texttt{num\_layers} - 1$). If $\texttt{num\_layers} = m$, the output is $\bh_m$. Forward propagation also computes the derivatives of the squashing function and stores them in \texttt{squash\_derivatives}, i.e., 
 \[
 \texttt{squash\_derivatives[i]} := s'\left(\bW_i \bh_{i}\right).
 \]
