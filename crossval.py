@@ -1,5 +1,4 @@
 """This module includes utilities to run cross-validation on general supervised learning methods."""
-from __future__ import division
 import numpy as np
 
 
