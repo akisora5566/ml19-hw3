@@ -92,7 +92,6 @@ def kernel_svm_train(data, labels, params):
     n = gram_matrix.shape[0]
 
     ############################################################################
-    # TODO: insert your code here to set up the inputs to the quadratic
     # programming solver
     # You must assign a value to the variables:
     # hessian, weights, eq_coeffs, eq_constants, lower_bounds, and upper_bounds
@@ -102,14 +101,19 @@ def kernel_svm_train(data, labels, params):
     # subject to    (eq_coeffs) x = (eq_constants)
     #   and         (lower_bounds) <= x <= (upper_bounds)
     ##########################################################################
-
-
+    labels=np.reshape(labels,(n,1))
+    y_matrix= np.dot(labels,labels.T) #(n,n)
+    hessian= np.multiply(gram_matrix,y_matrix) #(n,n)
+    weights = np.ones(n)
+    eq_coeffs = np.reshape(labels,(1,-1)) #(1,75)
+    eq_constants = np.zeros(1)
+    lower_bounds = np.zeros(n)
+    upper_bounds = np.ones(n)*params['C'] #(n)
     ###########################################################################
     # Call quadratic program with provided inputs.
     ############################################################################
     alphas = solve_quadprog(hessian, weights, eq_coeffs, eq_constants, None,
                             None, lower_bounds, upper_bounds)
-
     model = dict()
 
     # process optimized alphas to only store support vectors and alphas that have nonnegligible support
@@ -131,7 +135,6 @@ def kernel_svm_train(data, labels, params):
     else:
         # there were no support vectors on the margin (this should only happen due to numerical errors)
         model['bias'] = 0
-
     return model
 
 
@@ -157,11 +160,12 @@ def kernel_svm_predict(data, model):
         gram_matrix = linear_kernel(data, model['support_vectors'])
 
     ########################################################################
-    # TODO: Insert your code below to compute the prediction score given the
     # Gram matrix, model.alphas, model.svLabels, and model.bias
     # (You should need no for loops. This can be done in 1--3 lines of code.)
     ########################################################################
-    scores = None # replace this with your code
+    n = gram_matrix.shape[1]   #(25,n)
+    alpha_y_i= np.multiply(np.reshape(model['alphas'],(n,1)), model['sv_labels']) #(n,1)
+    scores = np.sum(alpha_y_i * gram_matrix.T ,axis=0)+model['bias'] #(25,)
 
     #####################################################################
     # End of score computation
