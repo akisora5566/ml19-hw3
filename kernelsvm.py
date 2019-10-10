@@ -23,8 +23,9 @@ def polynomial_kernel(row_data, col_data, order):
     #
     # This computation should take around 1--3 lines of code.
     #############################################
-    return None # replace this with your code
 
+    poly= (row_data.T.dot(col_data)+1)** order
+    return poly
 
 def rbf_kernel(row_data, col_data, sigma):
     """
@@ -47,8 +48,12 @@ def rbf_kernel(row_data, col_data, sigma):
     # One hint on how to accomplish this is the fact that for vectors x, y
     # (x - y).dot(x - y) = x.dot(x) + y.dot(y) - 2 * x.dot(y)
     #############################################
-    return None # replace this with your code
-
+    m = row_data.shape[1]
+    n = col_data.shape[1]
+    row = row_data.T.dot(row_data)
+    col = col_data.T.dot(col_data)
+    part_x = np.dot(np.diag(row), np.ones(m).T) + np.dot(np.ones(n), np.diag(col).T) - 2* row_data.T.dot(col_data)
+    return np.exp(- part_x / (2*pow(sigma,2)))
 
 def linear_kernel(row_data, col_data):
     """
@@ -102,6 +107,7 @@ def kernel_svm_train(data, labels, params):
     # subject to    (eq_coeffs) x = (eq_constants)
     #   and         (lower_bounds) <= x <= (upper_bounds)
     ##########################################################################
+
     labels=np.reshape(labels,(n,1))
     y_matrix= np.dot(labels,labels.T) #(n,n)
     hessian= np.multiply(gram_matrix,y_matrix) #(n,n)
