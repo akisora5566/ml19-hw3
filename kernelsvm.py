@@ -24,7 +24,7 @@ def polynomial_kernel(row_data, col_data, order):
     # This computation should take around 1--3 lines of code.
     #############################################
 
-    poly= (row_data.T.dot(col_data)+1)** order
+    poly = (row_data.T.dot(col_data)+1)** order
     return poly
 
 def rbf_kernel(row_data, col_data, sigma):
@@ -41,7 +41,8 @@ def rbf_kernel(row_data, col_data, sigma):
     :rtype: ndarray
     """
     #############################################
-    # TODO: Insert your code below to implement the RBF kernel. For full
+    # TODO: Insert your code below to implement the RBF kernel.
+    # TODO: Clean the commented code
     # credit, and faster code, you should compute the kernel using matrix
     # operations and have no Python loops.
     #
@@ -50,9 +51,18 @@ def rbf_kernel(row_data, col_data, sigma):
     #############################################
     m = row_data.shape[1]
     n = col_data.shape[1]
-    row = row_data.T.dot(row_data)
-    col = col_data.T.dot(col_data)
-    part_x = np.dot(np.diag(row), np.ones(m).T) + np.dot(np.ones(n), np.diag(col).T) - 2* row_data.T.dot(col_data)
+
+    row_square_raw = row_data.T.dot(row_data)      # 2D array np.dot == np.matmul
+    col_square_raw = col_data.T.dot(col_data)
+
+    row_square = np.multiply(np.diag(row_square_raw).reshape((m, 1)),  np.ones((m,n)))  # (m,n) xi^2
+    col_square = np.multiply(np.diag(col_square_raw).reshape((1, n)),  np.ones((m,n)))  # (m,n) xj^2
+
+    row_dot_col = np.matmul(row_data.T, col_data)                                       # (m,n) xi.T*xj
+
+    part_x = row_square + col_square - 2*row_dot_col
+    # History code by Georigia
+    # part_x = np.dot(np.diag(row_square_raw), np.ones(1,m).T) + np.dot(np.ones(n), np.diag(col_square_raw).T) - 2 * row_data.T.dot(col_data)
     return np.exp(- part_x / (2*pow(sigma,2)))
 
 def linear_kernel(row_data, col_data):
