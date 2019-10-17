@@ -61,8 +61,6 @@ def rbf_kernel(row_data, col_data, sigma):
     row_dot_col = np.matmul(row_data.T, col_data)                                       # (m,n) xi.T*xj
 
     part_x = row_square + col_square - 2*row_dot_col
-    # History code by Georigia
-    # part_x = np.dot(np.diag(row_square_raw), np.ones(1,m).T) + np.dot(np.ones(n), np.diag(col_square_raw).T) - 2 * row_data.T.dot(col_data)
     return np.exp(- part_x / (2*pow(sigma,2)))
 
 def linear_kernel(row_data, col_data):
@@ -118,11 +116,12 @@ def kernel_svm_train(data, labels, params):
     #   and         (lower_bounds) <= x <= (upper_bounds)
     ##########################################################################
 
-    labels=np.reshape(labels,(n,1))
-    y_matrix= np.dot(labels,labels.T) #(n,n)
+    labels_mat=np.reshape(labels,(n,1))
+    y_matrix= np.dot(labels_mat,labels_mat.T) #(n,n)
     hessian= np.multiply(gram_matrix,y_matrix) #(n,n)
     weights = np.ones(n)
-    eq_coeffs = np.reshape(labels,(1,-1)) #(1,75)
+    #eq_coeffs = np.reshape(labels,(1,-1)) #(1,n)
+    eq_coeffs = labels.reshape((1,n))
     eq_constants = np.zeros(1)
     lower_bounds = np.zeros(n)
     upper_bounds = np.ones(n)*params['C'] #(n)
@@ -181,10 +180,9 @@ def kernel_svm_predict(data, model):
     # Gram matrix, model.alphas, model.svLabels, and model.bias
     # (You should need no for loops. This can be done in 1--3 lines of code.)
     ########################################################################
-    n = gram_matrix.shape[1]   #(25,n)
-    alpha_y_i= np.multiply(np.reshape(model['alphas'],(n,1)), model['sv_labels']) #(n,1)
-    scores = np.sum(alpha_y_i * gram_matrix.T ,axis=0)+model['bias'] #(25,)
-
+    n = gram_matrix.shape[1]   #(m,n)
+    alpha_y_i= np.multiply(model['alphas'].reshape((n,1)), model['sv_labels'].reshape((n,1))) #(n,1)
+    scores = np.sum(alpha_y_i.T * gram_matrix, axis=1) + model['bias']  #(m, )
     #####################################################################
     # End of score computation
     #####################################################################
